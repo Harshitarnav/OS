@@ -54,9 +54,8 @@ public:
 		normal.enqueue(&entity);
 	}
 	else {
-		assert((entity.priority() == SchedulingEntityPriority::REALTIME) || 			(entity.priority() == SchedulingEntityPriority::INTERACTIVE) || (entity.priority() 			== SchedulingEntityPriority::DAEMON) || (entity.priority() 				==SchedulingEntityPriority::NORMAL));
+		assert((entity.priority() == SchedulingEntityPriority::REALTIME) || (entity.priority() == SchedulingEntityPriority::INTERACTIVE) || (entity.priority() == SchedulingEntityPriority::DAEMON) || (entity.priority() ==SchedulingEntityPriority::NORMAL));	
 	}
-
     }
 
     /**
