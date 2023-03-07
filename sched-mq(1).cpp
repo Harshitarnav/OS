@@ -37,7 +37,7 @@ public:
      */
     void add_to_runqueue(SchedulingEntity& entity) override
     {
-    /*To disable the interrupts when manipulating the run queue*/
+    //To disable the interrupts when manipulating the run queue
 	UniqueIRQLock l;
       
 	if (entity.priority() == SchedulingEntityPriority::REALTIME) {
@@ -64,7 +64,7 @@ public:
      */
     void remove_from_runqueue(SchedulingEntity& entity) override
     {
-        /*To disable the interrupts when manipulating the run queue*/
+        //To disable the interrupts when manipulating the run queue
         UniqueIRQLock l;
 
       if (entity.priority() == SchedulingEntityPriority::REALTIME) {
@@ -91,7 +91,7 @@ public:
      */
     SchedulingEntity *pick_next_entity() override
     {
-	    /*To disable the interrupts when manipulating the run queue*/
+	    //To disable the interrupts when manipulating the run queue
 	    UniqueIRQLock l;
         
       	if (!realtime.empty()) {
@@ -110,7 +110,7 @@ public:
         	return round_robin(daemon);
 	  	}
         
-        /*For idle process to run*/
+        //For idle process to run
       	else {
 		    return NULL;
 	  	}
@@ -123,7 +123,7 @@ public:
      */
     SchedulingEntity *round_robin(List<SchedulingEntity *> &prio_queue) 
     {
-        /*Stores the task to be returned*/
+        //Stores the task to be returned
         SchedulingEntity *priority_entity = prio_queue.pop();
 		prio_queue.enqueue(priority_entity);
         return priority_entity;
