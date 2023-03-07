@@ -239,7 +239,6 @@ public:
     void init()
     {
         time=0;
-        syslog.messagef(LogLevel::DEBUG, "111111");
     }
 
     /**
@@ -248,7 +247,6 @@ public:
      */
     void add_to_runqueue(SchedulingEntity& entity) override
     {
-      syslog.messagef(LogLevel::DEBUG, "222222");
       /*To disable the interrupts when manipulating the run queue*/
 	    UniqueIRQLock l;
 
@@ -279,7 +277,6 @@ public:
      */
     void remove_from_runqueue(SchedulingEntity& entity) override
     {
-      syslog.messagef(LogLevel::DEBUG, "333333");
       /*To disable the interrupts when manipulating the run queue*/
       UniqueIRQLock l;
 
@@ -307,12 +304,10 @@ public:
      */
     SchedulingEntity *pick_next_entity() override
     {
-        syslog.messagef(LogLevel::DEBUG, "444444");
         /*Timer for providing time slices for priority queues*/
         if (time>100) {
             time = 0;
         }
-        syslog.messagef(LogLevel::DEBUG, "time = %d", time);
         time++;
 
         /*To disable the interrupts when manipulating the run queue*/
@@ -320,24 +315,21 @@ public:
 
         /*Round Robin for Realtime priority queue and time slice of 0-40*/
         if (!realtime.empty() && (time<=40)) {
-        return round_robin(realtime);
+          return round_robin(realtime);
         }
 
         /*Round Robin for Interactive priority queue and time slice of 40-70*/
         else if (!interactive.empty() && (time>40 && time<=70)) {
-          syslog.messagef(LogLevel::DEBUG, "777777");
           return round_robin(interactive);
         }
 
         /*Shortest Job First for Normal priority queue and time slice of 70-90*/
         else if (!normal.empty() && (time>70 && time<=90)) {
-          syslog.messagef(LogLevel::DEBUG, "888888");
           return shortest_job_first(normal);
         }
 
         /*Shortest Job First for Daemon priority queue and time slice of 90-100*/
         else if (!daemon.empty() && (time>90 && time<=100)) {
-          syslog.messagef(LogLevel::DEBUG, "999999");
           return shortest_job_first(daemon);
         }
 
@@ -346,28 +338,23 @@ public:
 
           /*Round Robin for Realtime priority queue and time slice of 0-40*/
           if (!realtime.empty()) {
-          return round_robin(realtime);
+            return round_robin(realtime);
           }
 
           /*Round Robin for Interactive priority queue and time slice of 40-70*/
           else if (!interactive.empty()) {
-            syslog.messagef(LogLevel::DEBUG, "777777");
             return round_robin(interactive);
           }
 
           /*Shortest Job First for Normal priority queue and time slice of 70-90*/
           else if (!normal.empty()) {
-            syslog.messagef(LogLevel::DEBUG, "888888");
             return shortest_job_first(normal);
           }
 
           /*Shortest Job First for Daemon priority queue and time slice of 90-100*/
           else if (!daemon.empty()) {
-            syslog.messagef(LogLevel::DEBUG, "999999");
             return shortest_job_first(daemon);
           }
-          syslog.messagef(LogLevel::DEBUG, "ttt");
-
           return NULL;
         }
     }
@@ -379,7 +366,6 @@ public:
      */
     SchedulingEntity *round_robin(List<SchedulingEntity *> &prio_queue)
     {
-      syslog.messagef(LogLevel::DEBUG, "555555");
         /*Stores the task to be returned*/
         SchedulingEntity *priority_entity = prio_queue.pop();
         prio_queue.enqueue(priority_entity);
@@ -393,8 +379,6 @@ public:
      */
     SchedulingEntity *shortest_job_first(List<SchedulingEntity *> &prio_queue)
     {
-        syslog.messagef(LogLevel::DEBUG, "666666");
-
         if (prio_queue.count()==1) {
           return prio_queue.first();
         }
@@ -407,7 +391,6 @@ public:
 
         for (const auto& entity : prio_queue) {
             if (min_entity==NULL || entity->cpu_runtime()<min_time) {
-                syslog.messagef(LogLevel::DEBUG, "min_time = %d", min_time);
                 min_entity = entity;
                 min_time = entity->cpu_runtime();
             }
